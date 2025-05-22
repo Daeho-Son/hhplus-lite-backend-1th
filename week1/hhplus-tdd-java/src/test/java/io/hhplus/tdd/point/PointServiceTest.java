@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,5 +59,17 @@ class PointServiceTest {
         assertEquals(0, userPoint.point());
         assertTrue(currentTimeMillis <= userPoint.updateMillis());
         assertTrue(userPoint.updateMillis() <= System.currentTimeMillis());
+    }
+
+    @Test
+    void history_존재하지_않는_id가_요청되면_빈_배열을_반환한다() {
+        // given
+        long userId = 1L;
+
+        // when
+        List<PointHistory> expected = pointService.history(userId);
+
+        // then
+        assertEquals(0, expected.size());
     }
 }
