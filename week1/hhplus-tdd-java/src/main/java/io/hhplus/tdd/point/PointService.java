@@ -1,5 +1,6 @@
 package io.hhplus.tdd.point;
 
+import io.hhplus.tdd.database.PointHistoryTable;
 import io.hhplus.tdd.database.UserPointTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +16,13 @@ public class PointService {
     private static final Logger log = LoggerFactory.getLogger(PointService.class);
 
     private final UserPointTable userPointTable;
+    private final PointHistoryTable pointHistoryTable;
 
     @Autowired
-    PointService(UserPointTable userPointTable) {
+    PointService(UserPointTable userPointTable, PointHistoryTable pointHistoryTable) {
         this.userPointTable = userPointTable;
+        this.pointHistoryTable = pointHistoryTable;
     }
-
 
     public UserPoint point(long id) {
         UserPoint userPoint = userPointTable.selectById(id);
@@ -29,7 +31,7 @@ public class PointService {
     }
 
     public List<PointHistory> history(long id) {
-        List<PointHistory> historyList = List.of();
+        List<PointHistory> historyList = pointHistoryTable.selectAllByUserId(id);
         log.info("history의 개수: {}", historyList.size());
         return historyList;
     }
