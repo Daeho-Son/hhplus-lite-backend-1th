@@ -1,0 +1,36 @@
+package io.hhplus.tdd.point;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@ExtendWith(MockitoExtension.class)
+class PointServiceTest {
+
+    @InjectMocks
+    private PointService pointService;
+
+    @Test
+    void point_id_1을_요청하면_id_1의_포인트_정보를_반환한다() {
+        // given
+        long userId = 1L;
+
+        // when
+        UserPoint userPoint = pointService.point(userId);
+
+        //then
+        assertEquals(userId, userPoint.id());
+    }
+
+    @Test
+    void point_존재하지_않는_id를_요청하면_500_에러가_발생한다() {
+        // given
+        long userId = Long.MAX_VALUE;
+
+        // when & then
+        assertThrows(Exception.class, () -> pointService.point(userId));
+    }
+}
