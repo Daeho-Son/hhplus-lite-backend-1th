@@ -135,6 +135,10 @@ class PointServiceTest {
         long userId = 1L;
         long amount = 100L;
 
+        UserPoint initUserPoint = new UserPoint(userId, 100L, System.currentTimeMillis());
+        when(userPointTable.selectById(userId)).thenReturn(initUserPoint);
+        when(userPointTable.insertOrUpdate(userId, initUserPoint.point() - amount)).thenReturn(new UserPoint(userId, initUserPoint.point() - amount, System.currentTimeMillis()));
+
         // when
         UserPoint actual = pointService.use(userId, amount);
 
@@ -143,7 +147,7 @@ class PointServiceTest {
         assertEquals(0, actual.point());
     }
 
-    // 작성 이유: 예외를 위한 테스트 케이스
+    // 작성 이유: 예외를 위한 테스트 케이스. 깔끔하게 작성됐다.
     @Test
     void use_포인트가_음수가_되면_예외를_발생한다() {
         // given
