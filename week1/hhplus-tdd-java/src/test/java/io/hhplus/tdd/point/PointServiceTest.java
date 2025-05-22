@@ -70,6 +70,7 @@ class PointServiceTest {
         assertTrue(userPoint.updateMillis() <= System.currentTimeMillis());
     }
 
+    // 작성 이유: 기본적인 테스트 케이스
     @Test
     void history_존재하지_않는_id가_요청되면_빈_배열을_반환한다() {
         // given
@@ -86,6 +87,7 @@ class PointServiceTest {
     }
 
 
+    // 작성 이유: 기본적인 테스트 케이스
     // 의문: 의미있는 테스트 코드인가?
     @Test
     void history_존재하는_id가_요청되면_리스트를_반환한다() {
@@ -125,5 +127,30 @@ class PointServiceTest {
         verify(userPointTable, times(1)).insertOrUpdate(userId, amount);
         assertEquals(userId, actual.id());
         assertEquals(amount, actual.point());
+    }
+
+    @Test
+    void use_id_1이_100포인트를_소유하고_있을_때_100을_사용하면_id_1의_포인트는_0이_된다() {
+        // given
+        long userId = 1L;
+        long amount = 100L;
+
+        // when
+        UserPoint actual = pointService.use(userId, amount);
+
+        // then
+        assertEquals(userId, actual.id());
+        assertEquals(0, actual.point());
+    }
+
+    // 작성 이유: 예외를 위한 테스트 케이스
+    @Test
+    void use_포인트가_음수가_되면_예외를_발생한다() {
+        // given
+        long userId = 1L;
+        long amount = 100L;
+
+        // when & then
+        assertThrows(Exception.class, () -> pointService.use(userId, amount));
     }
 }
