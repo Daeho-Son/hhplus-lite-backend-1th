@@ -37,7 +37,7 @@ public class PointService {
     }
 
     public UserPoint charge(long id, long amount) {
-        UserPoint userPoint = new UserPoint(0, 0, 0);
+        UserPoint userPoint = new UserPoint(id, amount, System.currentTimeMillis());
         log.info("userPoint: {}", userPoint);
         return userPoint;
     }
