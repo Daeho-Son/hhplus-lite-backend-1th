@@ -43,9 +43,13 @@ public class PointService {
         return userPoint;
     }
 
-    public UserPoint use(long id, long amount) {
-        UserPoint userPoint = new UserPoint(0, 0, 0);
+    public UserPoint use(long id, long amount) throws Exception {
+        UserPoint userPoint = userPointTable.selectById(id);
+        if (userPoint.point() - amount < 0) {
+            throw new Exception();
+        }
+        UserPoint updatedUserPoint = userPointTable.insertOrUpdate(id, userPoint.point() - amount);
         log.info("userPoint: {}", userPoint);
-        return userPoint;
+        return updatedUserPoint;
     }
 }

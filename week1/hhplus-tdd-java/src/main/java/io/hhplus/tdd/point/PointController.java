@@ -61,7 +61,7 @@ public class PointController {
     public UserPoint use(
             @PathVariable long id,
             @RequestBody long amount
-    ) {
+    ) throws Exception {
         log.info("id: {}, amount: {}", id, amount);
         return pointService.use(id, amount);
     }

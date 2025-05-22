@@ -130,7 +130,7 @@ class PointServiceTest {
     }
 
     @Test
-    void use_id_1이_100포인트를_소유하고_있을_때_100을_사용하면_id_1의_포인트는_0이_된다() {
+    void use_id_1이_100포인트를_소유하고_있을_때_100을_사용하면_id_1의_포인트는_0이_된다() throws Exception {
         // given
         long userId = 1L;
         long amount = 100L;
