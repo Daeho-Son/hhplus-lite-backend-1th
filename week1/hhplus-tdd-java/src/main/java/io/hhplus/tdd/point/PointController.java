@@ -1,6 +1,5 @@
 package io.hhplus.tdd.point;
 
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public class PointController {
     @GetMapping("{id}")
     public UserPoint point(
             @PathVariable long id
-    ) {
+    ) throws Exception {
         log.info("id: {}", id);
         return pointService.point(id);
     }

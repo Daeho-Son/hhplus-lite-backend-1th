@@ -14,7 +14,7 @@ class PointServiceTest {
     private PointService pointService;
 
     @Test
-    void point_id_1을_요청하면_id_1의_포인트_정보를_반환한다() {
+    void point_id_1을_요청하면_id_1의_포인트_정보를_반환한다() throws Exception {
         // given
         long userId = 1L;
 

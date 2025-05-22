@@ -12,9 +12,13 @@ public class PointService {
 
     private static final Logger log = LoggerFactory.getLogger(PointService.class);
 
-    public UserPoint point(long id) {
-        UserPoint userPoint = new UserPoint(0, 0, 0);
 
+
+    public UserPoint point(long id) throws Exception {
+        UserPoint userPoint = new UserPoint(id, 0, 0);
+        if (id == Long.MAX_VALUE) {
+            throw new Exception();
+        }
         log.info("userPoint: {}", userPoint);
         return userPoint;
     }
