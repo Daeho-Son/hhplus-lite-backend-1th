@@ -2,6 +2,7 @@ package io.hhplus.tdd.point;
 
 import io.hhplus.tdd.database.PointHistoryTable;
 import io.hhplus.tdd.database.UserPointTable;
+import org.apache.catalina.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,6 +27,7 @@ class PointServiceTest {
     @InjectMocks
     private PointService pointService;
 
+    // 작성 이유: 가장 먼저 성공하는 테스트 케이스가 생각났기 때문
     @Test
     void point_id_1을_요청하면_id_1의_포인트_정보를_반환한다() {
         // given
@@ -45,6 +47,9 @@ class PointServiceTest {
         assertEquals(currentTimeMillis, userPoint.updateMillis());
     }
 
+
+    // 작성 이유: 마찬가지로 성공하는 케이스가 생각났음
+    // 의문: Mock을 반환해서 Mock에 사용된 데이터랑 비교하는게 어떤 의미가 있는지.. 제대로 작성한게 맞는건가?
     @Test
     void point_존재하지_않는_id를_요청하면_Userpoint_empty를_반환한다() {
         // given
@@ -81,7 +86,7 @@ class PointServiceTest {
     }
 
 
-    // 의미있는 테스트 코드인가?
+    // 의문: 의미있는 테스트 코드인가?
     @Test
     void history_존재하는_id가_요청되면_리스트를_반환한다() {
         // given
@@ -109,13 +114,16 @@ class PointServiceTest {
         long amount = 100L;
         long currentTimeMillis = System.currentTimeMillis();
 
+        when(userPointTable.selectById(userId)).thenReturn(new UserPoint(userId, 0, currentTimeMillis));
+        when(userPointTable.insertOrUpdate(userId, amount)).thenReturn(new UserPoint(userId, amount, currentTimeMillis + 1000));
+
         // when
         UserPoint actual = pointService.charge(userId, amount);
 
         // then
+        verify(userPointTable, times(1)).selectById(userId);
+        verify(userPointTable, times(1)).insertOrUpdate(userId, amount);
         assertEquals(userId, actual.id());
         assertEquals(amount, actual.point());
-        assertTrue(currentTimeMillis <= actual.updateMillis());
-        assertTrue(actual.updateMillis() <= System.currentTimeMillis());
     }
 }
