@@ -110,7 +110,7 @@ class PointServiceTest {
     }
 
     @Test
-    void charge_id_1이_100을_요청하면_id_1의_포인트_100을_충전한다() {
+    void charge_id_1이_100을_요청하면_id_1의_포인트_100을_충전한다() throws Exception {
         // given
         long userId = 1L;
         long amount = 100L;
@@ -127,6 +127,16 @@ class PointServiceTest {
         verify(userPointTable, times(1)).insertOrUpdate(userId, amount);
         assertEquals(userId, actual.id());
         assertEquals(amount, actual.point());
+    }
+
+    @Test
+    void charge_포인트가_int_최대값을_초과하면_예외_발생() throws Exception {
+        // given
+        long userId = 1L;
+        long amount = Integer.MAX_VALUE + 1;
+
+        // when & then
+        assertThrows(Exception.class, () -> pointService.charge(userId, amount));
     }
 
     @Test

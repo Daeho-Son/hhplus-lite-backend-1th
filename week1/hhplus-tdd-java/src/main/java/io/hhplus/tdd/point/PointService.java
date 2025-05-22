@@ -36,10 +36,14 @@ public class PointService {
         return historyList;
     }
 
-    public UserPoint charge(long id, long amount) {
+    public UserPoint charge(long id, long amount) throws Exception {
         UserPoint userPoint = userPointTable.selectById(id);
+        if (userPoint.point() + amount >= Integer.MAX_VALUE) {
+            throw new Exception();
+        }
         userPoint = userPointTable.insertOrUpdate(id, userPoint.point() + amount);
         log.info("userPoint: {}", userPoint);
+
         return userPoint;
     }
 
