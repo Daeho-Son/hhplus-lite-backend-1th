@@ -101,4 +101,21 @@ class PointServiceTest {
         verify(pointHistoryTable, times(1)).selectAllByUserId(userId);
         assertEquals(expected.size(), actual.size());
     }
+
+    @Test
+    void charge_id_1이_100을_요청하면_id_1의_포인트_100을_충전한다() {
+        // given
+        long userId = 1L;
+        long amount = 100L;
+        long currentTimeMillis = System.currentTimeMillis();
+
+        // when
+        UserPoint actual = pointService.charge(userId, amount);
+
+        // then
+        assertEquals(userId, actual.id());
+        assertEquals(amount, actual.point());
+        assertTrue(currentTimeMillis <= actual.updateMillis());
+        assertTrue(actual.updateMillis() <= System.currentTimeMillis());
+    }
 }
