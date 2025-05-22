@@ -1,7 +1,9 @@
 package io.hhplus.tdd.point;
 
+import io.hhplus.tdd.database.UserPointTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,14 +14,17 @@ public class PointService {
 
     private static final Logger log = LoggerFactory.getLogger(PointService.class);
 
+    private final UserPointTable userPointTable;
+
+    @Autowired
+    PointService(UserPointTable userPointTable) {
+        this.userPointTable = userPointTable;
+    }
 
 
-    public UserPoint point(long id) throws Exception {
-        UserPoint userPoint = new UserPoint(id, 0, 0);
-        if (id == Long.MAX_VALUE) {
-            throw new Exception();
-        }
-        log.info("userPoint: {}", userPoint);
+    public UserPoint point(long id) {
+        UserPoint userPoint = userPointTable.selectById(id);
+        log.debug("userPoint: {}", userPoint);
         return userPoint;
     }
 
